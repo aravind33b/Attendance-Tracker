@@ -10,9 +10,9 @@ eboard_data = pd.read_csv('E-Board.csv')
 
 senators_data = pd.read_csv('Senators.csv')
 
-eventbrite_data = pd.read_csv('eventbrite_data.csv')
+eventbrite_data = pd.read_csv('eventbrite.csv')
 
-zoom_data = pd.read_csv('zoom_data.csv')
+zoom_data = pd.read_csv('zoom.csv')
 
 eventbrite_data["Full Name"] = eventbrite_data["First Name"].astype(str) +" "+ eventbrite_data["Last Name"].astype(str)
 
@@ -59,7 +59,7 @@ pd.options.display.max_rows = 200
 
 attendeeList = attendeeList.drop_duplicates(keep='last', ignore_index=True)
 
-cmpTime = pd.to_datetime('01/14/2023 3:50:00 PM')
+cmpTime = pd.to_datetime('02/11/2023 1:15:00 PM')
 cmpTime = cmpTime.time()
 # print(cmpTime)
 
@@ -75,7 +75,9 @@ attendeeList['Role'].replace(False, 'Member', inplace=True)
 
 attendeeList['Role'].fillna('E-Board Member', inplace=True)
 
-attendeeList["Attendance"] = np.where(((attendeeList['Total Duration (Mins)'] >= 75) & (attendeeList['Leave Time'] >= cmpTime)), 'Yes', 'No')
+#attendeeList["Attendance"] = np.where(((attendeeList['Total Duration (Mins)'] >= 60) & (attendeeList['Leave Time'] >= cmpTime)), 'Yes', 'No')
+
+attendeeList.drop(attendeeList[(attendeeList['Total Duration (Mins)'] < 60) | (attendeeList['Leave Time'] < cmpTime)].index, inplace = True)
 
 print(attendeeList)
 
